@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff8f5" />
+  <title>Snap — Photo Booth</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Snap home">
+        <span class="brand-mark">ss</span>
+        <span>snap<span class="brand-dot">.</span></span>
+      </a>
+      <span class="top-note"><span class="status-dot"></span> your little photo studio</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">오늘의 작은 추억 · A LITTLE MEMORY</p>
+        <h1>Make a moment<br /><em>stay forever.</em></h1>
+        <p class="intro-copy">A tiny photo booth, just for you.</p>
+      </section>
+
+      <section class="studio-grid">
+        <div class="camera-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">01 / THE STUDIO</p>
+              <h2>Ready when you are</h2>
+            </div>
+            <span class="live-pill"><span class="status-dot"></span> LIVE</span>
+          </div>
+
+          <div class="camera-stage" id="cameraStage">
+            <video id="camera" autoplay playsinline muted></video>
+            <canvas id="captureCanvas" hidden></canvas>
+            <div class="camera-placeholder" id="cameraPlaceholder">
+              <div class="placeholder-icon">♡</div>
+              <h3>Your moment starts here</h3>
+              <p>Allow camera access to see your preview.</p>
+              <button class="button button-primary" id="enableCameraBtn">Turn on camera</button>
+            </div>
+            <div class="countdown-overlay hidden" id="countdownOverlay">
+              <span id="countdownNumber">3</span>
+            </div>
+            <div class="camera-bottom-label"><span>✦</span> say kimchi!</div>
+          </div>
+
+          <div class="camera-actions">
+            <button class="button button-primary button-wide" id="startBtn">Start photo session <span>↗</span></button>
+            <button class="button button-soft" id="retakeAllBtn" disabled>Start over</button>
+          </div>
+          <p class="helper-text" id="cameraMessage">Allow camera access, then start your 4-cut session.</p>
+        </div>
+
+        <aside class="settings-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">02 / YOUR VIBE</p>
+              <h2>Make it yours</h2>
+            </div>
+            <span class="sparkle">✳</span>
+          </div>
+
+          <div class="setting-group">
+            <label for="layoutSelect">Photo layout</label>
+            <select id="layoutSelect">
+              <option value="strip">Classic 4-cut strip</option>
+              <option value="grid">Four-photo grid</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <label>Frame color</label>
+            <div class="swatches" id="frameSwatches">
+              <button class="swatch active" data-frame="#fff8f2" aria-label="Cream frame" title="Cream"></button>
+              <button class="swatch" data-frame="#f6dce5" aria-label="Pink frame" title="Pink"></button>
+              <button class="swatch" data-frame="#dce8d7" aria-label="Sage frame" title="Sage"></button>
+              <button class="swatch" data-frame="#dce8f5" aria-label="Blue frame" title="Blue"></button>
+              <button class="swatch" data-frame="#272624" aria-label="Black frame" title="Black"></button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="filterSelect">Photo filter</label>
+            <select id="filterSelect">
+              <option value="none">Original</option>
+              <option value="soft">Soft & dreamy</option>
+              <option value="mono">Black & white</option>
+              <option value="warm">Warm film</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <label for="captionInput">Your caption</label>
+            <input id="captionInput" type="text" maxlength="28" value="a day to remember ♡" placeholder="Write a little note..." />
+          </div>
+
+          <div class="setting-group">
+            <label for="timerSelect">Countdown</label>
+            <select id="timerSelect">
+              <option value="3">3 seconds</option>
+              <option value="5">5 seconds</option>
+              <option value="10">10 seconds</option>
+            </select>
+          </div>
+
+          <div class="mini-tip"><span>✦</span><p><strong>Little tip</strong><br />Find your light, try a pose, and let the countdown do its thing.</p></div>
+        </aside>
+      </section>
+
+      <section class="results-section">
+        <div class="results-heading">
+          <div>
+            <p class="section-kicker">03 / YOUR MEMORIES</p>
+            <h2>Your photo strip</h2>
+          </div>
+          <span class="photo-count" id="photoCount">0 / 4 photos</span>
+        </div>
+
+        <div class="results-grid">
+          <div class="photo-slots" id="photoSlots">
+            <div class="empty-slot"><span>01</span><b>♡</b><small>your first shot</small></div>
+            <div class="empty-slot"><span>02</span><b>♡</b><small>your second shot</small></div>
+            <div class="empty-slot"><span>03</span><b>♡</b><small>your third shot</small></div>
+            <div class="empty-slot"><span>04</span><b>♡</b><small>your fourth shot</small></div>
+          </div>
+          <div class="export-card">
+            <div class="export-icon">✧</div>
+            <h3>Made by you,<br />kept forever.</h3>
+            <p>Your finished photo booth creation will appear here, ready to save.</p>
+            <button class="button button-primary button-wide" id="downloadBtn" disabled>Download photo strip ↓</button>
+            <button class="button button-outline button-wide" id="retakeBtn" disabled>Retake a photo</button>
+            <p class="small-note">PNG image · made on your device</p>
+          </div>
+        </div>
+        <div class="final-preview-wrap hidden" id="finalPreviewWrap">
+          <div class="final-preview-heading">
+            <div><span class="section-kicker">YOUR FINISHED CREATION</span><h3>Looking cute already.</h3></div>
+            <button class="text-button" id="hidePreviewBtn">Hide preview ↑</button>
+          </div>
+          <div class="final-preview" id="finalPreview"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>seoul snap<span class="brand-dot">.</span></span><span>made with ♡ for your little moments</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
